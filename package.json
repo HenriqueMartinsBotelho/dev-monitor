@@ -1,6 +1,6 @@
 {
   "name": "dev-monitor",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A lightweight, cross-platform desktop application for managing and monitoring development projects. Built with Neutralino.js.",
   "main": "resources/js/main.js",
   "scripts": {
@@ -25,16 +25,16 @@
     "productivity",
     "developer-tools"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Henrique Martins Botelho <henrique@example.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/dev-monitor.git"
+    "url": "https://github.com/HenriqueMartinsBotelho/dev-monitor.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/dev-monitor/issues"
+    "url": "https://github.com/HenriqueMartinsBotelho/dev-monitor/issues"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/dev-monitor#readme",
+  "homepage": "https://github.com/HenriqueMartinsBotelho/dev-monitor#readme",
   "engines": {
     "node": ">=14.0.0"
   },

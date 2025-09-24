@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-REPO="YOUR_USERNAME/dev-monitor"
+REPO="HenriqueMartinsBotelho/dev-monitor"
 APP_NAME="dev-monitor"
 INSTALL_DIR="$HOME/.local/bin"
 

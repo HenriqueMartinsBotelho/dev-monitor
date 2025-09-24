@@ -8,7 +8,7 @@ param(
 )
 
 # Configuration
-$Repo = "YOUR_USERNAME/dev-monitor"
+$Repo = "HenriqueMartinsBotelho/dev-monitor"
 $AppName = "dev-monitor"
 $BinaryName = "dev-monitor-win-x64.exe"
 

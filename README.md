@@ -4,9 +4,9 @@
 
 Built with [Neutralino.js](https://neutralino.js.org/), Dev Monitor provides a simple and elegant interface to organize your coding projects and quickly open them in Visual Studio Code.
 
-[![GitHub release](https://img.shields.io/github/v/release/YOUR_USERNAME/dev-monitor)](https://github.com/YOUR_USERNAME/dev-monitor/releases)
-[![GitHub license](https://img.shields.io/github/license/YOUR_USERNAME/dev-monitor)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/YOUR_USERNAME/dev-monitor?style=social)](https://github.com/YOUR_USERNAME/dev-monitor/stargazers)
+[![GitHub release](https://img.shields.io/github/v/release/HenriqueMartinsBotelho/dev-monitor)](https://github.com/HenriqueMartinsBotelho/dev-monitor/releases)
+[![GitHub license](https://img.shields.io/github/license/HenriqueMartinsBotelho/dev-monitor)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/HenriqueMartinsBotelho/dev-monitor?style=social)](https://github.com/HenriqueMartinsBotelho/dev-monitor/stargazers)
 
 ![Dev Monitor Screenshot](resources/icons/logo.gif)
 
@@ -40,13 +40,13 @@ Built with [Neutralino.js](https://neutralino.js.org/), Dev Monitor provides a s
 #### Linux/macOS
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/dev-monitor/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/HenriqueMartinsBotelho/dev-monitor/main/install.sh | bash
 ```
 
 #### Windows (PowerShell as Administrator)
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/YOUR_USERNAME/dev-monitor/main/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/HenriqueMartinsBotelho/dev-monitor/main/install.ps1 | iex
 ```
 
 ### 📥 Manual Download
@@ -108,7 +108,7 @@ neu run                          # Run the application
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/dev-monitor.git
+git clone https://github.com/HenriqueMartinsBotelho/dev-monitor.git
 cd dev-monitor
 
 # Install Neutralino.js CLI (if not already installed)
@@ -131,7 +131,7 @@ neu run
 #### Linux/macOS
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/dev-monitor/main/scripts/uninstall.sh | bash
+curl -sSL https://raw.githubusercontent.com/HenriqueMartinsBotelho/dev-monitor/main/scripts/uninstall.sh | bash
 ```
 
 #### Windows (PowerShell)

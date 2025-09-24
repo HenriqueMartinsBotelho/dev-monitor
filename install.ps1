@@ -106,21 +106,38 @@ function New-InstallDirectory {
 
 # Download and install the binary
 function Install-Binary {
-    $tempFile = [System.IO.Path]::GetTempFileName() + ".exe"
-    $finalPath = Join-Path $InstallPath "$AppName.exe"
+    $tempBinary = [System.IO.Path]::GetTempFileName() + ".exe"
+    $tempResources = [System.IO.Path]::GetTempFileName()
+    $finalBinaryPath = Join-Path $InstallPath "$AppName.exe"
+    $finalResourcesPath = Join-Path $InstallPath "resources.neu"
     
     Write-Info "Downloading $BinaryName..."
     
     try {
-        Invoke-WebRequest -Uri $DownloadUrl -OutFile $tempFile -ErrorAction Stop
-        Write-Info "Installing to $finalPath..."
-        Move-Item $tempFile $finalPath -Force
+        Invoke-WebRequest -Uri $DownloadUrl -OutFile $tempBinary -ErrorAction Stop
+        Write-Success "Binary download completed"
+        
+        # Download resources.neu file
+        $resourcesUrl = $DownloadUrl -replace "$BinaryName", "resources.neu"
+        Write-Info "Downloading resources.neu..."
+        Invoke-WebRequest -Uri $resourcesUrl -OutFile $tempResources -ErrorAction Stop
+        Write-Success "Resources download completed"
+        
+        Write-Info "Installing to $finalBinaryPath..."
+        Move-Item $tempBinary $finalBinaryPath -Force
+        
+        Write-Info "Installing resources to $finalResourcesPath..."
+        Move-Item $tempResources $finalResourcesPath -Force
+        
         Write-Success "$AppName installed successfully!"
     }
     catch {
         Write-Error "Failed to download or install: $($_.Exception.Message)"
-        if (Test-Path $tempFile) {
-            Remove-Item $tempFile -Force
+        if (Test-Path $tempBinary) {
+            Remove-Item $tempBinary -Force
+        }
+        if (Test-Path $tempResources) {
+            Remove-Item $tempResources -Force
         }
         exit 1
     }

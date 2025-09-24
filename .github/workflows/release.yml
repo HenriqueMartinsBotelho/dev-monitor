@@ -43,6 +43,9 @@ jobs:
           cp dist/dev-monitor/dev-monitor-mac_universal release-assets/dev-monitor-mac-universal
           cp dist/dev-monitor/dev-monitor-win_x64.exe release-assets/dev-monitor-win-x64.exe
 
+          # Copy the resources.neu file (contains all app resources)
+          cp dist/dev-monitor/resources.neu release-assets/resources.neu
+
           # Make Linux/macOS binaries executable
           chmod +x release-assets/dev-monitor-linux-*
           chmod +x release-assets/dev-monitor-mac-*

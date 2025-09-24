@@ -144,26 +144,36 @@ create_install_dir() {
 
 # Download and install the binary
 download_and_install() {
-    local temp_file=$(mktemp)
-    local final_path="$INSTALL_DIR/$APP_NAME"
+    local temp_binary=$(mktemp)
+    local temp_resources=$(mktemp)
+    local final_binary_path="$INSTALL_DIR/$APP_NAME"
+    local final_resources_path="$INSTALL_DIR/resources.neu"
     
     print_status "Downloading $BINARY_NAME..."
-    if curl -L --progress-bar -o "$temp_file" "$DOWNLOAD_URL"; then
-        print_success "Download completed"
+    if curl -L --progress-bar -o "$temp_binary" "$DOWNLOAD_URL"; then
+        print_success "Binary download completed"
     else
         print_error "Failed to download the binary"
         exit 1
     fi
     
-    if [ $? -ne 0 ]; then
-        print_error "Failed to download $BINARY_NAME"
-        rm -f "$temp_file"
+    # Download resources.neu file
+    local resources_url=$(echo "$DOWNLOAD_URL" | sed 's/dev-monitor-[^/]*$/resources.neu/')
+    print_status "Downloading resources.neu..."
+    if curl -L --progress-bar -o "$temp_resources" "$resources_url"; then
+        print_success "Resources download completed"
+    else
+        print_error "Failed to download resources.neu"
+        rm -f "$temp_binary"
         exit 1
     fi
     
-    print_status "Installing to $final_path..."
-    mv "$temp_file" "$final_path"
-    chmod +x "$final_path"
+    print_status "Installing to $final_binary_path..."
+    mv "$temp_binary" "$final_binary_path"
+    chmod +x "$final_binary_path"
+    
+    print_status "Installing resources to $final_resources_path..."
+    mv "$temp_resources" "$final_resources_path"
     
     print_success "$APP_NAME installed successfully!"
 }

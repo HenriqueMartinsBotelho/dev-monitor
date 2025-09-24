@@ -1,8 +1,29 @@
-const projectList = [
-  { name: "Project A", path: "~/dev/main-projects/dream-frontend" },
-  { name: "Project B", path: "/path/to/projectB" },
-  { name: "Project C", path: "/path/to/projectC" },
-];
+let projectList = [];
+
+async function loadProjects() {
+  try {
+    const storedProjects = await Neutralino.storage.getData("projectList");
+    projectList = JSON.parse(storedProjects);
+  } catch (error) {
+    projectList = [
+      { name: "Project A", path: "~/path/to/projectA" },
+      { name: "Project B", path: "/path/to/projectB" },
+      { name: "Project C", path: "/path/to/projectC" },
+    ];
+    await saveProjects();
+  }
+}
+
+async function saveProjects() {
+  try {
+    await Neutralino.storage.setData(
+      "projectList",
+      JSON.stringify(projectList)
+    );
+  } catch (error) {
+    console.error("Error saving projects:", error);
+  }
+}
 
 async function openProject(projectPath) {
   try {
@@ -28,27 +49,181 @@ function displayProjectList() {
   const mainDiv = document.getElementById("main");
 
   let projectHTML = "<h2>Development Projects</h2>";
+
+  projectHTML += `
+    <div class="project-controls">
+      <button id="addProjectBtn" class="btn btn-primary">Add New Project</button>
+    </div>
+  `;
+
   projectHTML += '<div class="project-list">';
 
-  projectList.forEach((project, index) => {
-    projectHTML += `
-      <div class="project-item" onclick="openProject('${project.path}')">
-        <h3>${project.name}</h3>
-        <p class="project-path">${project.path}</p>
-      </div>
-    `;
-  });
+  if (projectList.length === 0) {
+    projectHTML +=
+      '<p class="no-projects">No projects configured. Click "Add New Project" to get started.</p>';
+  } else {
+    projectList.forEach((project, index) => {
+      projectHTML += `
+        <div class="project-item">
+          <div class="project-content" onclick="openProject('${project.path}')">
+            <h3>${project.name}</h3>
+            <p class="project-path">${project.path}</p>
+          </div>
+          <div class="project-actions">
+            <button onclick="editProject(${index})" class="btn btn-small btn-edit">Edit</button>
+            <button onclick="deleteProject(${index})" class="btn btn-small btn-delete">Delete</button>
+          </div>
+        </div>
+      `;
+    });
+  }
 
   projectHTML += "</div>";
   mainDiv.innerHTML = projectHTML;
+
+  document
+    .getElementById("addProjectBtn")
+    .addEventListener("click", showAddProjectModal);
+}
+
+function showAddProjectModal() {
+  showProjectModal();
+}
+
+function editProject(index) {
+  const project = projectList[index];
+  showProjectModal(project, index);
+}
+
+async function deleteProject(index) {
+  const project = projectList[index];
+  const confirmed = await Neutralino.os.showMessageBox(
+    "Confirm Delete",
+    `Are you sure you want to delete "${project.name}"?`,
+    "YES_NO",
+    "QUESTION"
+  );
+
+  if (confirmed === "YES") {
+    projectList.splice(index, 1);
+    await saveProjects();
+    displayProjectList();
+  }
+}
+
+function showProjectModal(project = null, index = null) {
+  const isEdit = project !== null;
+
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>${isEdit ? "Edit Project" : "Add New Project"}</h3>
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="projectForm">
+          <div class="form-group">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" value="${
+              project ? project.name : ""
+            }" required>
+          </div>
+          <div class="form-group">
+            <label for="projectPath">Project Path:</label>
+            <div class="path-input-group">
+              <input type="text" id="projectPath" value="${
+                project ? project.path : ""
+              }" required>
+              <button type="button" id="browseBtn" class="btn btn-secondary">Browse</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveProject(${index})">${
+    isEdit ? "Update" : "Add"
+  } Project</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  document
+    .getElementById("browseBtn")
+    .addEventListener("click", selectProjectPath);
+
+  document.getElementById("projectName").focus();
+
+  document.getElementById("projectForm").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      saveProject(index);
+    }
+  });
+}
+
+async function selectProjectPath() {
+  try {
+    const selectedPath = await Neutralino.os.showFolderDialog(
+      "Select Project Folder"
+    );
+    if (selectedPath) {
+      document.getElementById("projectPath").value = selectedPath;
+    }
+  } catch (error) {
+    console.error("Error selecting folder:", error);
+  }
+}
+
+async function saveProject(index) {
+  const name = document.getElementById("projectName").value.trim();
+  const path = document.getElementById("projectPath").value.trim();
+
+  if (!name || !path) {
+    await Neutralino.os.showMessageBox(
+      "Error",
+      "Please fill in all fields.",
+      "OK",
+      "ERROR"
+    );
+    return;
+  }
+
+  const newProject = { name, path };
+
+  if (index !== null) {
+    projectList[index] = newProject;
+  } else {
+    projectList.push(newProject);
+  }
+
+  await saveProjects();
+  closeModal();
+  displayProjectList();
+}
+
+function closeModal() {
+  const modal = document.querySelector(".modal");
+  if (modal) {
+    modal.remove();
+  }
 }
 
 function onWindowClose() {
   Neutralino.app.exit();
 }
 
+async function initApp() {
+  await loadProjects();
+  displayProjectList();
+}
+
 Neutralino.init();
 
 Neutralino.events.on("windowClose", onWindowClose);
 
-displayProjectList();
+initApp();

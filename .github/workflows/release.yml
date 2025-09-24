@@ -52,10 +52,6 @@ jobs:
           sha256sum * > checksums.txt
           cd ..
 
-      - name: Upload checksums
-        run: |
-          cd release-assets && cp checksums.txt ../checksums.txt && cd ..
-
       - name: Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -80,5 +76,4 @@ jobs:
 
           ### Manual Download
           Download the appropriate binary for your platform below and make it executable." \
-            release-assets/* \
-            checksums.txt
+            release-assets/*

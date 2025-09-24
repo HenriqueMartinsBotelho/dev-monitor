@@ -1,6 +1,6 @@
 {
   "name": "dev-monitor",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "A lightweight, cross-platform desktop application for managing and monitoring development projects. Built with Neutralino.js.",
   "main": "resources/js/main.js",
   "scripts": {

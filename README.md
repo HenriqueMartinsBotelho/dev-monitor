@@ -91,7 +91,7 @@ iwr -useb https://raw.githubusercontent.com/HenriqueMartinsBotelho/dev-monitor/m
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/dev-monitor.git
+git clone https://github.com/HenriqueMartinsBotelho/dev-monitor.git
 cd dev-monitor
 
 # Quick setup (automated)
@@ -137,7 +137,7 @@ curl -sSL https://raw.githubusercontent.com/HenriqueMartinsBotelho/dev-monitor/m
 #### Windows (PowerShell)
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/YOUR_USERNAME/dev-monitor/main/scripts/uninstall.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/HenriqueMartinsBotelho/dev-monitor/main/scripts/uninstall.ps1 | iex
 ```
 
 ### Manual Uninstall
@@ -245,7 +245,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ```bash
 # Clone and setup
-git clone https://github.com/YOUR_USERNAME/dev-monitor.git
+git clone https://github.com/HenriqueMartinsBotelho/dev-monitor.git
 cd dev-monitor
 ./scripts/dev-setup.sh
 
@@ -295,15 +295,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Project Stats
 
-![GitHub forks](https://img.shields.io/github/forks/YOUR_USERNAME/dev-monitor?style=social)
-![GitHub issues](https://img.shields.io/github/issues/YOUR_USERNAME/dev-monitor)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/YOUR_USERNAME/dev-monitor)
-![Downloads](https://img.shields.io/github/downloads/YOUR_USERNAME/dev-monitor/total)
+![GitHub forks](https://img.shields.io/github/forks/HenriqueMartinsBotelho/dev-monitor?style=social)
+![GitHub issues](https://img.shields.io/github/issues/HenriqueMartinsBotelho/dev-monitor)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/HenriqueMartinsBotelho/dev-monitor)
+![Downloads](https://img.shields.io/github/downloads/HenriqueMartinsBotelho/dev-monitor/total)
 
 ---
 
 <div align="center">
-  <strong>Made with ❤️ by <a href="https://github.com/YOUR_USERNAME">Your Name</a></strong>
+  <strong>Made with ❤️ by <a href="https://github.com/HenriqueMartinsBotelho">Henrique Martins Botelho</a></strong>
   <br>
   <sub>⭐ Star this repo if you find it useful!</sub>
 </div>

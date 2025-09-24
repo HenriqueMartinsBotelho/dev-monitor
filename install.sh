@@ -75,9 +75,9 @@ detect_platform() {
     
     if [ "$OS" = "mac" ] && [ "$ARCH" = "x64" ]; then
         # Use universal binary for macOS
-        BINARY_NAME="${APP_NAME}-${OS}_universal"
+        BINARY_NAME="${APP_NAME}-${OS}-universal"
     else
-        BINARY_NAME="${APP_NAME}-${OS}_${ARCH}"
+        BINARY_NAME="${APP_NAME}-${OS}-${ARCH}"
     fi
     
     print_status "Detected platform: $OS-$ARCH"

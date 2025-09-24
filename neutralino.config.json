@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
-  "applicationId": "js.neutralino.sample",
+  "applicationId": "com.devmonitor.app",
   "version": "1.0.0",
   "defaultMode": "window",
   "port": 0,
@@ -24,9 +24,9 @@
   },
   "modes": {
     "window": {
-      "title": "dev-monitor",
-      "width": 800,
-      "height": 500,
+      "title": "Dev Monitor - Project Manager",
+      "width": 900,
+      "height": 600,
       "minWidth": 400,
       "minHeight": 200,
       "center": true,

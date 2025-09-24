@@ -1,0 +1,151 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install Neutralino CLI
+        run: npm install -g @neutralinojs/neu
+
+      - name: Update Neutralino binaries
+        run: neu update
+
+      - name: Build application
+        run: neu build
+
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+
+          # Copy binaries with proper names
+          cp dist/dev-monitor/dev-monitor-linux_x64 release-assets/dev-monitor-linux-x64
+          cp dist/dev-monitor/dev-monitor-linux_arm64 release-assets/dev-monitor-linux-arm64
+          cp dist/dev-monitor/dev-monitor-linux_armhf release-assets/dev-monitor-linux-armhf
+          cp dist/dev-monitor/dev-monitor-mac_x64 release-assets/dev-monitor-mac-x64
+          cp dist/dev-monitor/dev-monitor-mac_arm64 release-assets/dev-monitor-mac-arm64
+          cp dist/dev-monitor/dev-monitor-mac_universal release-assets/dev-monitor-mac-universal
+          cp dist/dev-monitor/dev-monitor-win_x64.exe release-assets/dev-monitor-win-x64.exe
+
+          # Make Linux/macOS binaries executable
+          chmod +x release-assets/dev-monitor-linux-*
+          chmod +x release-assets/dev-monitor-mac-*
+
+          # Create checksums for verification
+          cd release-assets
+          sha256sum * > checksums.txt
+          cd ..
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+          body: |
+            ## Changes in this Release
+            - Bug fixes and improvements
+            - Cross-platform binaries for Linux, macOS, and Windows
+
+            ## Installation
+
+            ### Quick Install (Linux/macOS)
+            ```bash
+            curl -sSL https://raw.githubusercontent.com/${{ github.repository }}/main/install.sh | bash
+            ```
+
+            ### Quick Install (Windows)
+            ```powershell
+            iwr -useb https://raw.githubusercontent.com/${{ github.repository }}/main/install.ps1 | iex
+            ```
+
+            ### Manual Download
+            Download the appropriate binary for your platform below and make it executable.
+
+      - name: Upload Linux x64 Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/dev-monitor-linux-x64
+          asset_name: dev-monitor-linux-x64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux ARM64 Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/dev-monitor-linux-arm64
+          asset_name: dev-monitor-linux-arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux ARMhf Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/dev-monitor-linux-armhf
+          asset_name: dev-monitor-linux-armhf
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS x64 Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/dev-monitor-mac-x64
+          asset_name: dev-monitor-mac-x64
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS ARM64 Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/dev-monitor-mac-arm64
+          asset_name: dev-monitor-mac-arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS Universal Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/dev-monitor-mac-universal
+          asset_name: dev-monitor-mac-universal
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/dev-monitor-win-x64.exe
+          asset_name: dev-monitor-win-x64.exe
+          asset_content_type: application/octet-stream

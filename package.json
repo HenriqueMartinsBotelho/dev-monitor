@@ -1,26 +1,46 @@
 {
   "name": "dev-monitor",
   "version": "1.0.0",
-  "description": "A Neutralino.js application for development monitoring",
+  "description": "A lightweight, cross-platform desktop application for managing and monitoring development projects. Built with Neutralino.js.",
   "main": "resources/js/main.js",
   "scripts": {
     "start": "neu run",
+    "dev": "neu run --frontend-lib-dev",
     "build": "neu build",
-    "update": "neu update"
+    "build:release": "neu build --release",
+    "clean": "rm -rf dist/ && rm -f neutralinojs.log",
+    "update": "neu update",
+    "setup": "./scripts/dev-setup.sh",
+    "release": "./scripts/release.sh",
+    "tasks": "./scripts/tasks.sh"
   },
   "keywords": [
     "neutralino",
     "desktop",
     "app",
-    "monitor"
+    "development",
+    "project-manager",
+    "vscode",
+    "cross-platform",
+    "productivity",
+    "developer-tools"
   ],
-  "author": "",
+  "author": "Your Name <your.email@example.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/YOUR_USERNAME/dev-monitor.git"
   },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/dev-monitor/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/dev-monitor#readme",
   "engines": {
     "node": ">=14.0.0"
-  }
+  },
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ]
 }

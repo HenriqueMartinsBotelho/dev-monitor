@@ -6,9 +6,21 @@ async function loadProjects() {
     projectList = JSON.parse(storedProjects);
   } catch (error) {
     projectList = [
-      { name: "Project A", path: "~/path/to/projectA" },
-      { name: "Project B", path: "/path/to/projectB" },
-      { name: "Project C", path: "/path/to/projectC" },
+      {
+        name: "Project A",
+        path: "~/path/to/projectA",
+        repo: "http://github.com/user/projectA",
+      },
+      {
+        name: "Project B",
+        path: "/path/to/projectB",
+        repo: "http://github.com/user/projectB",
+      },
+      {
+        name: "Project C",
+        path: "/path/to/projectC",
+        repo: "http://github.com/user/projectC",
+      },
     ];
     await saveProjects();
   }
@@ -63,6 +75,7 @@ function displayProjectList() {
       '<p class="no-projects">No projects configured. Click "Add New Project" to get started.</p>';
   } else {
     projectList.forEach((project, index) => {
+      console.log(project.name);
       projectHTML += `
         <div class="project-item">
           <div class="project-content" onclick="openProject('${project.path}')">
@@ -72,6 +85,11 @@ function displayProjectList() {
           <div class="project-actions">
             <button onclick="editProject(${index})" class="btn btn-small btn-edit">Edit</button>
             <button onclick="deleteProject(${index})" class="btn btn-small btn-delete">Delete</button>
+            ${
+              project.repo
+                ? `<button onclick="openRepo('${project.repo}')" class="btn btn-small btn-open">Github</button>`
+                : `<button class="btn btn-small btn-open" disabled title="No repository configured">Github</button>`
+            }
           </div>
         </div>
       `;
@@ -111,6 +129,30 @@ async function deleteProject(index) {
   }
 }
 
+function openRepo(repoUrl) {
+  if (!repoUrl || repoUrl === "undefined") {
+    Neutralino.os.showMessageBox(
+      "Repository not set",
+      "This project does not have a repository URL configured."
+    );
+    return;
+  }
+
+  console.log(`Opening repository: ${repoUrl}`);
+
+  // Cross-platform open in default browser
+  let cmd = "";
+  if (NL_OS === "Windows") {
+    cmd = `cmd /c start "" "${repoUrl}"`;
+  } else if (NL_OS === "Darwin") {
+    cmd = `open "${repoUrl}"`;
+  } else {
+    cmd = `xdg-open "${repoUrl}"`;
+  }
+
+  Neutralino.os.execCommand(cmd);
+}
+
 function showProjectModal(project = null, index = null) {
   const isEdit = project !== null;
 
@@ -138,6 +180,12 @@ function showProjectModal(project = null, index = null) {
               }" required>
               <button type="button" id="browseBtn" class="btn btn-secondary">Browse</button>
             </div>
+          </div>
+          <div class="form-group">
+            <label for="projectRepo">Repository URL (optional):</label>
+            <input type="url" id="projectRepo" value="${
+              project && project.repo ? project.repo : ""
+            }" placeholder="https://github.com/user/repo">
           </div>
         </form>
       </div>
@@ -182,6 +230,8 @@ async function selectProjectPath() {
 async function saveProject(index) {
   const name = document.getElementById("projectName").value.trim();
   const path = document.getElementById("projectPath").value.trim();
+  const repoInput = document.getElementById("projectRepo");
+  const repo = repoInput ? repoInput.value.trim() : "";
 
   if (!name || !path) {
     await Neutralino.os.showMessageBox(
@@ -193,7 +243,7 @@ async function saveProject(index) {
     return;
   }
 
-  const newProject = { name, path };
+  const newProject = { name, path, repo: repo || "" };
 
   if (index !== null) {
     projectList[index] = newProject;

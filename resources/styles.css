@@ -217,7 +217,8 @@ body {
   color: #333;
 }
 
-.form-group input[type="text"] {
+.form-group input[type="text"],
+.form-group input[type="url"] {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid #ced4da;
@@ -227,7 +228,8 @@ body {
   box-sizing: border-box;
 }
 
-.form-group input[type="text"]:focus {
+.form-group input[type="text"]:focus,
+.form-group input[type="url"]:focus {
   outline: none;
   border-color: #007acc;
   box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);

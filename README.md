@@ -265,6 +265,10 @@ cd dev-monitor
 
 ## 📋 Roadmap
 
+- [x] Basic project management (Add/Edit/Delete)
+- [x] Open projects in VS Code
+- [x] Persistent storage of projects
+- [] Update menu
 - [ ] Keyboard shortcuts (Escape to close modal)
 - [ ] Project categories/tags
 - [ ] Recent projects list
